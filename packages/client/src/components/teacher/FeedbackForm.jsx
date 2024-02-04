@@ -28,6 +28,7 @@ const FeedbackForm = ({ id }) => {
 
       if (response.data) {
         alert('Feedback sent successfully');
+        window.location.reload();
       }
 
       setLoading(false);

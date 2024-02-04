@@ -83,7 +83,7 @@ const Calendar = ({ onSelectDate,Assignments }) => {
               {groupedDays.map((week, weekIndex) => (
                 <tr key={weekIndex}>
                   {week.map((day) => {
-                    const assignmentForDay = Assignments.find(
+                    const assignmentForDay = Assignments?.find(
                       (item) => format(day, "M/d/yyyy") === item.date
                     );
                     const isAssignmentDay =

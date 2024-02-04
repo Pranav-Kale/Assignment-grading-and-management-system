@@ -22,7 +22,7 @@ const NAV = [
 
 const StudentSidebar = () => {
   const navigate = useNavigate(); 
-  const [headerOn,setHeaderOn] = useState(false);
+  const [headerOn, setHeaderOn] = useState(false);
   const [selectedItem, setSelectedItem] = useState(() => {
     const storedSelected = localStorage.getItem('selectedNavItem');
     return storedSelected || 'Dashboard';
@@ -30,7 +30,7 @@ const StudentSidebar = () => {
 
   useEffect(() => {
     const storedSelected = localStorage.getItem('selectedNavItem');
-    const initialSelected = storedSelected || 'Dashboard';
+    const initialSelected = storedSelected ? storedSelected : 'Dashboard';
     setSelectedItem(initialSelected);
   }, []);
 
@@ -40,24 +40,22 @@ const StudentSidebar = () => {
   };
 
   const handleHamburgerClick = () => {
-    setHeaderOn(!headerOn)
+    setHeaderOn(!headerOn);
+  }
+
+  function handleLogout() {
+    let result = window.confirm("Are you sure?");
+    if (result) {
+      localStorage.removeItem('token');
+      // Set the default selected item to 'Dashboard' on logout
+      localStorage.setItem('selectedNavItem', 'Dashboard');
+      setSelectedItem('Dashboard');
+      navigate('/');
+      console.log('Logged Out as a Student');
+    }
   }
 
   
-  function handleLogout() {
-    let result = window.confirm("are you sure?");
-    setSelectedItem('Dashboard')
-    if(result){
-      
-    localStorage.removeItem('token');
-    navigate('/')
-    console.log('Logged Out as a Student')
-    }
-    
-}
-
-
-
   return (
     <div
       className={`pl-0 w-full sm:w-fit lg:pl-7 sm:py-8 ${headerOn ? 'h-screen' : 'h-fit'} sm:h-screen flex flex-col justify-between  sidebar text-white`}

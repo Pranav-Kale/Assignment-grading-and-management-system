@@ -32,17 +32,14 @@ const TeacherAssignments = () => {
       try {
         const response = await axios.get(`https://assignment-grading-and-management-system.onrender.com/api/get-submitted-assignment`);
         setAssignment(response.data);
-        // console.log('api', response.data)
         console.log(response.data.submittedAssignments)
-        // setLoading(false);
       } catch (error) {
-        // setLoading(false);
+        throw error
       }
     }
 
     fetchAssignment();
 
-    // Cleanup function to cancel any pending requests if the component unmounts
     return () => {};
   }, []);
 

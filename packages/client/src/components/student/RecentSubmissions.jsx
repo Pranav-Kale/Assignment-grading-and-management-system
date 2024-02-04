@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const RecentSubmissions = ({title, file, submissionDate, assignment}) => {
+const RecentSubmissions = ({title, file, submissionDate, assignment, grade}) => {
   const formattedDate = new Date(submissionDate).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -21,6 +21,7 @@ const RecentSubmissions = ({title, file, submissionDate, assignment}) => {
         </div>
         <p>Submission Date: <span className='text-green-500'>{formattedDate}</span></p>
         </div>
+        <p>Grade: {parseFloat(grade).toFixed(2)}</p>
     </div>
   )
 }

@@ -6,11 +6,11 @@ import { UserContext } from '../../store/userContext';
 const StudentSettings = () => {
 
   const {user} = useContext(UserContext)
-  const name = user.student.name;
-  const email = user.student.email;
-  const branch = user.student.branch;
-  const year = user.student.year;
-  const division = user.student.division;
+  const name = user?.student?.name;
+  const email = user?.student?.email;
+  const branch = user?.student?.branch;
+  const year = user?.student?.year;
+  const division = user?.student?.division;
 
 
   const [edit, setEdit] = useState(false);

@@ -4,10 +4,11 @@ import TeacherSidebarLayout from '../../layout/teacher/TeacherSidebarLayout';
 import { UserContext } from '../../store/userContext';
 import Calendar from '../../components/_commons/calendar/TeacherCalendar';
 import Updates from '../../components/_commons/calendar/Updates';
+import { useNavigate } from 'react-router-dom';
 
 const TeacherDashboard = () => {
 
-
+  const navigate = useNavigate(); 
   const [selectedDate, setSelectedDate] = useState(null);
   const { user, again, setAgain } = useContext(UserContext);
 
@@ -27,8 +28,8 @@ const TeacherDashboard = () => {
   }
 
 
-  const name = user.teacher.name;
-  const Assignment = user.teacher.uploadedAssignment;
+  const name = user?.teacher?.name;
+  const Assignment = user?.teacher?.uploadedAssignment;
 
 
   
@@ -36,7 +37,7 @@ const TeacherDashboard = () => {
     setSelectedDate(date);
   };
 
-  const Assignments = user?.teacher.uploadedAssignment.map(assignment => ({
+  const Assignments = user?.teacher?.uploadedAssignment.map(assignment => ({
     title: assignment.title,
     date: new Date(assignment.startDate).toLocaleDateString(),
     completed: true,
@@ -44,6 +45,16 @@ const TeacherDashboard = () => {
   }));
 
   console.log('User ----------> ', user);
+
+  function handleLogout() {
+    let result = window.confirm("Are you sure?");
+    if (result) {
+      localStorage.removeItem('token');
+      localStorage.setItem('selectedNavItem', 'Dashboard');
+      navigate('/');
+      console.log('Logged Out as a Student');
+    }
+  }
 
   return (
     <MainLayout>
@@ -53,10 +64,10 @@ const TeacherDashboard = () => {
           <div className='hidden sm:block'>Welcome to EduTrack</div>
           <div className='flex flex-row gap-2 md:gap-4 items-center justify-between sm:justify-end w-full sm:w-fit'>
             <div className='flex flex-row gap-3 items-center '>
-              <i className='text-[40px] sm:text-[40px] md:text-[50px] fa-regular fa-circle-user'></i>
-              <span>{user?.teacher.name}</span>
+              <i className='text-[35px] sm:text-[40px] text-gray-400 font-light md:text-[50px] fa-regular fa-circle-user'></i>
+              <span>{user?.teacher?.name}</span>
             </div>
-            <button className='py-1 md:py-2 px-2 md:px-4 bg-red-600 rounded-md hover:bg-red-700 text-white'>
+            <button onClick={handleLogout} className='py-1 md:py-2 px-2 md:px-4 bg-red-600 rounded-md hover:bg-red-700 text-white'>
               Logout
             </button>
           </div>
@@ -94,7 +105,7 @@ const TeacherDashboard = () => {
                       <i className='text-[50px] fa-solid fa-book-open'></i>
                     </div>
                     <div className='flex flex-col items-center text-black'>
-                      <p className='text-4xl font-semibold'>{user.teacher.uploadedAssignment.length}</p>
+                      <p className='text-4xl font-semibold'>{user?.teacher?.uploadedAssignment.length}</p>
                       <p className='font-semibold'>Assignments</p>
                     </div>
                   </div>

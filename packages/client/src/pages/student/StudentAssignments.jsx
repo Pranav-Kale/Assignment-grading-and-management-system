@@ -29,7 +29,7 @@ const StudentAssignments = () => {
         <div className='hideScrollbar flex px-4 flex-col gap-3 w-full overflow-y-auto rounded-lg scrollbar-hidden h-[300px] sm:h-[450px] xl:h-[598px]'>
           <div>
 
-            {user.student.submittedAssignment.map((item, idx) => (
+            {user?.student?.submittedAssignment.slice(0,2).map((item, idx) => (
               <PendingAssignments
               // name={item.name}
               assignmentId={item._id}
@@ -65,12 +65,13 @@ const StudentAssignments = () => {
         <div className='hideScrollbar flex px-4 flex-col gap-3 w-full overflow-y-auto rounded-lg scrollbar-hidden h-[300px] sm:h-[450px] xl:h-[598px]'>
           <div>
             
-            {user.student.submittedAssignment.map((item, idx) => (
+            {user?.student?.submittedAssignment.map((item, idx) => (
               <RecentSubmissions
-              title='Dummy Title'
+              title={item.assignment.title}
               file={item.file}
               submissionDate={item.submissionDate}
               assignment={item.assignment}
+              grade={item.grades}
               />
             ))}
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 function Deadline({ selectedDate, Assignments }) {
   const today = new Date();
-  const pickedDate = selectedDate ? selectedDate.toLocaleDateString() : today.toLocaleDateString();
+  const pickedDate = selectedDate instanceof Date ? selectedDate.toLocaleDateString() : today.toLocaleDateString();
 
   const [inputDateString, setInputDateString] = useState('2/3/2024');
   const inputDate = new Date(inputDateString);
@@ -10,11 +10,9 @@ function Deadline({ selectedDate, Assignments }) {
   const options = { day: 'numeric', month: 'short', year: 'numeric' };
   const formattedInputDate = inputDate.toLocaleDateString('en-US', options);
 
-  // console.log(formattedInputDate);
-
   return (
     <div className='flex flex-col gap-2 max-h-[360px] overflow-y-scroll '>
-      {Assignments.map((item, i) => {
+      {Assignments?.map((item, i) => {
         const assignmentDate = new Date(item.date);
         const formattedAssignmentDate = assignmentDate.toLocaleDateString('en-US', options);
 

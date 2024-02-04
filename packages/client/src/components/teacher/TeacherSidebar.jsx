@@ -21,40 +21,39 @@ const NAV = [
 ];
 
 const TeacherSidebar = () => {
-  const navigate = useNavigate(); 
-  const [headerOn,setHeaderOn] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(() => {
-    const storedSelected = localStorage.getItem('selectedNavItem');
-    return storedSelected || 'Dashboard';
-  });
-
-  useEffect(() => {
-    const storedSelected = localStorage.getItem('selectedNavItem');
-    const initialSelected = storedSelected || 'Dashboard';
-    setSelectedItem(initialSelected);
-  }, []);
-
-  const handleClick = (title) => {
-    setSelectedItem(title);
-    localStorage.setItem('selectedNavItem', title);
-  };
-
-  const handleHamburgerClick = () => {
-    setHeaderOn(!headerOn)
-  }
-
+    const navigate = useNavigate(); 
+    const [headerOn, setHeaderOn] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(() => {
+      const storedSelected = localStorage.getItem('selectedNavItem');
+      return storedSelected || 'Dashboard';
+    });
   
-  function handleLogout() {
-    let result = window.confirm("are you sure?");
-    setSelectedItem('Dashboard')
-    if(result){
-      
-    localStorage.removeItem('token');
-    navigate('/')
-    console.log('Logged Out as a Student')
+    useEffect(() => {
+      const storedSelected = localStorage.getItem('selectedNavItem');
+      const initialSelected = storedSelected ? storedSelected : 'Dashboard';
+      setSelectedItem(initialSelected);
+    }, []);
+  
+    const handleClick = (title) => {
+      setSelectedItem(title);
+      localStorage.setItem('selectedNavItem', title);
+    };
+  
+    const handleHamburgerClick = () => {
+      setHeaderOn(!headerOn);
     }
-    
-}
+  
+    function handleLogout() {
+      let result = window.confirm("Are you sure?");
+      if (result) {
+        localStorage.removeItem('token');
+        // Set the default selected item to 'Dashboard' on logout
+        localStorage.setItem('selectedNavItem', 'Dashboard');
+        setSelectedItem('Dashboard');
+        navigate('/');
+        console.log('Logged Out as a Student');
+      }
+    }
 
 
 

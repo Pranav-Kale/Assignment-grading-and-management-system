@@ -7,9 +7,9 @@ import { UserContext } from '../../store/userContext';
 const TeacherSettings = () => {
 
   const {user} = useContext(UserContext);
-  const name = user.teacher.name;
+  const name = user?.teacher?.name;
   const role = 'Teacher';
-  const email = user.teacher.email;
+  const email = user?.teacher?.email;
 
 
   return (

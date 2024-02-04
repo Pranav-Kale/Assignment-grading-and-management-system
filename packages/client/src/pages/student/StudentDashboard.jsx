@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const StudentDashboard = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('Dashboard');
   const navigate = useNavigate();
 
   
@@ -32,14 +32,14 @@ const StudentDashboard = () => {
   }
 
  
-  const name = user.student.name;
-  const Assignment = user.student.submittedAssignment;
+  const name = user?.student?.name;
+  const Assignment = user?.student?.submittedAssignment;
 
   const handleDateSelect = (date) => {
     setSelectedDate(date);
   };
 
-  const Assignments = Assignment.map(assignment => ({
+  const Assignments = Assignment?.map(assignment => ({
     title: assignment.file,
     date: new Date(assignment.submissionDate).toLocaleDateString(),
     completed: true,
@@ -54,8 +54,18 @@ const StudentDashboard = () => {
     navigate('/')
     console.log('Logged Out as a Student')
     }
-    
-}
+  }
+
+  function handleLogout() {
+    let result = window.confirm("Are you sure?");
+    if (result) {
+      localStorage.removeItem('token');
+      localStorage.setItem('selectedNavItem', 'Dashboard');
+      navigate('/');
+      console.log('Logged Out as a Student');
+    }
+  }
+
   return (
     <MainLayout>
       <StudentSidebarLayout />
@@ -66,7 +76,7 @@ const StudentDashboard = () => {
             <div className='flex flex-row gap-3 items-center '>
 
             <i className='text-[40px] text-gray-400 fa-regular fa-circle-user'></i>
-            <span className='font-semibold'>{user.student.name}</span>
+            <span className='font-semibold'>{user?.student?.name}</span>
             </div>
             <button onClick={handleLogout} className='py-1 md:py-2 px-2 md:px-4 bg-red-600 rounded-md hover:bg-red-700 text-white'>
               Logout
@@ -91,7 +101,7 @@ const StudentDashboard = () => {
                       <i className='text-xl sm:text-2xl lg:text-4xl fa-solid fa-folder-open'></i>
                       <p className=''>
                         <span className='text-xl sm:text-2xl md:text-3xl lg:text-5xl'>
-                          {Assignment.length}
+                          {Assignment?.length}
                         </span>
                       </p>
                     </div>

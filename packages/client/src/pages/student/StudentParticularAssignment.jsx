@@ -20,43 +20,33 @@ const StudentParticularAssignment = () => {
   // loading assignment by fetch
   useEffect(() => {
     async function fetchAssignment() {
-      console.log('fetching..')
+      console.log('fetching..');
       try {
         const response = await axios.get(`https://assignment-grading-and-management-system.onrender.com/api/student/assignment/${id}`);
-        setAssignment(response.data.assignment);
-        console.log(response.data.assignment)
+        const formattedAssignment = {
+          ...response.data.assignment,
+          endDate: new Date(response.data.assignment.endDate), // Parse end date string to Date object
+          submissions: response.data.assignment.submissions.map(submission => ({
+            ...submission,
+            submissionDate: new Date(submission.submissionDate), // Parse submission date string to Date object
+          })),
+        };
+        setAssignment(formattedAssignment);
+        console.log(formattedAssignment);
         setLoading(false);
       } catch (error) {
         setError(error);
         setLoading(false);
       }
     }
-
+  
     fetchAssignment();
-
+  
     // Cleanup function to cancel any pending requests if the component unmounts
     return () => {};
   }, [id]);
 
-    const formattedEndDate = new Date(assignment?.endDate).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-    
-    const formattedSubmissionDate = new Date(assignment?.submissions[0]?.submissionDate).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-
-    // user submitted assignment or not 
-    // const checkUserId = () => {
-    //   console.log('checking')
-    //   // Assuming your JSON data is an array of objects with each object having a userId property
-    //   const userAssignment = assignment?.submissions?.find(item => item?.submittedBy === user?.student?._id); // Find the object matching the user ID
-    //   setSubmittedAssignment(userAssignment); // Update submittedAssignment state
-    // };
+  console.log('The data i want : ',assignment);
 
   return (
     <MainLayout>
@@ -79,7 +69,7 @@ const StudentParticularAssignment = () => {
                 </div>
                 <div className='flex flex-row w-full'>
                   <p className='w-[40%] p-1 text-sm sm:text-base font-medium sm:p-2 rounded-md'>End Date :</p>
-                  <p className='w-[60%] p-1 text-sm sm:text-base sm:p-2 rounded-md bg-gray-100'>{formattedEndDate}</p>
+                  <p className='w-[60%] p-1 text-sm sm:text-base sm:p-2 rounded-md bg-gray-100'>2/4/24</p>
                 </div>
               </div>
             </div>
@@ -154,7 +144,7 @@ const StudentParticularAssignment = () => {
                 </div>
                 <div className='flex flex-row w-full'>
                   <p className='w-[40%] p-1 text-sm sm:text-base font-medium sm:p-2 rounded-md'>Submitted Date :</p>
-                  <p className='w-[60%] p-1 text-sm sm:text-base sm:p-2 rounded-md bg-gray-100'>{formattedSubmissionDate}</p>
+                  <p className='w-[60%] p-1 text-sm sm:text-base sm:p-2 rounded-md bg-gray-100'>1/30/24</p>
                 </div>
               </div>
             </div>

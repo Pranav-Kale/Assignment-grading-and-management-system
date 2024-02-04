@@ -21,6 +21,8 @@ const MyModal = ({modalIsOpen, setModalIsOpen, id}) => {
   // post assignment 
   
   
+  const [loading, setLoading] = useState(false);
+  
   const [file, setFile] = useState(null);
   const [studentId, setStudentId] = useState(user?.student._id);
   const [assignmentId, setAssignmentId] = useState('65beb504d2a0315617eddbac');
@@ -32,6 +34,7 @@ const MyModal = ({modalIsOpen, setModalIsOpen, id}) => {
 
 //   handle upload 
   const handleUpload = async () => {
+    setLoading(true)
     console.log(file,"studId: ", studentId,"assId: ", assignmentId)
     try {
       const formData = new FormData();
@@ -48,11 +51,18 @@ const MyModal = ({modalIsOpen, setModalIsOpen, id}) => {
           },
         }
       );
-
-      console.log('File uploaded successfully:', response.data.URL);
-    } catch (error) {
-      console.error('Error uploading file:', error.response ? error.response.data : error.message);
-    }
+        if(response){
+          setLoading(false)
+          alert('Assignment Submitted Successfully!')
+          console.log('File uploaded successfully:', response.data.URL);
+          closeModal()
+          window.location.reload();
+        }
+      } catch (error) {
+        setLoading(false)
+        alert('Error Submitting Assignment!')
+        console.error('Error uploading file:', error.response ? error.response.data : error.message);
+      }
   };
 
       const customStyles = {
@@ -81,9 +91,10 @@ const MyModal = ({modalIsOpen, setModalIsOpen, id}) => {
           <input type='file' onChange={handleFileChange} />
         </div>
         <button className='w-full bg-black text-white py-4 mt-4 rounded-md hover:bg-gray-800 cursor-pointer' onClick={handleUpload} disabled={!file}>
-          Upload
+          {loading? 'Loading...' : 'Submit'}
         </button>
       </div>
+      {loading && <h1 className='text-center text-3xl mt-20 animate-opacity'>Generating Automated Grades with ML model</h1>}
 
       </Modal>
     </div>
@@ -92,55 +103,3 @@ const MyModal = ({modalIsOpen, setModalIsOpen, id}) => {
 
 export default MyModal;
 
-
-// import React, { useState } from 'react';
-// import axios from 'axios';
-
-// const TryAPI = () => {
-//   // title, teacherId, endDate
-//   const [file, setFile] = useState(null);
-//   const [title, setTitile] = useState("Dummy Title");
-//   const [teacherId, setTeacherId] = useState("65bd1ae91425238e3f68a30d");
-//   const [endDate, setEndDate] = useState("2024-12-31");
-
-//   const handleFileChange = e => {
-//     setFile(e.target.files[0]);
-//   };
-
-//   const handleUpload = async () => {
-//     console.log(file)
-//     try {
-//       const formData = new FormData();
-//       formData.append('file', file);
-//       formData.append('title', title);
-//       formData.append('endDate', endDate);
-//       formData.append('teacherId', teacherId);
-
-//       const response = await axios.post(
-//         'http://localhost:5000/api/teacher/assignment',
-//         formData,
-//         {
-//           headers: {
-//             'Content-Type': 'multipart/form-data',
-//           },
-//         }
-//       );
-
-//       console.log('File uploaded successfully:', response.data.URL);
-//     } catch (error) {
-//       console.error('Error uploading file:', error.response ? error.response.data : error.message);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h1>File Upload</h1>
-//       <input type='file' onChange={handleFileChange} />
-//       <button onClick={handleUpload} disabled={!file}>
-//         Upload
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default TryAPI;
